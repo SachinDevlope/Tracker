@@ -1,7 +1,5 @@
 import { env } from "./env";
 
-// All dates are "YYYY-MM-DD" strings and months "YYYY-MM", interpreted in APP_TIMEZONE.
-
 export const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 export const MONTH_RE = /^\d{4}-\d{2}$/;
 
@@ -10,7 +8,7 @@ export function isDateString(value: unknown): value is string {
 }
 
 export function today() {
-  // en-CA formats as YYYY-MM-DD
+  // en-CA = YYYY-MM-DD
   return new Intl.DateTimeFormat("en-CA", { timeZone: env.APP_TIMEZONE }).format(new Date());
 }
 

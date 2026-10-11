@@ -20,7 +20,7 @@ export type ButtonStyleProps = {
   className?: string;
 };
 
-// Exported so links can share the button look
+// Also used by links
 export function buttonStyles({ variant = "primary", size = "md", className }: ButtonStyleProps = {}) {
   return cn(
     "rounded-md text-center font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50",

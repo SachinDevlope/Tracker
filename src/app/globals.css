@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Dark IDE palette (GitHub Dark inspired). Dark-only on purpose. */
+/* Dark IDE palette */
 :root {
   --background: #0d1117;
   --foreground: #c9d1d9;
@@ -8,7 +8,6 @@
   --muted: #7d8590;
   --border: #30363d;
 
-  /* syntax colours, reused for statuses */
   --syn-green: #7ee787;
   --syn-blue: #79c0ff;
   --syn-amber: #e3b341;
@@ -37,7 +36,6 @@
 
 body {
   background: var(--background);
-  /* faint grid, like an editor canvas */
   background-image:
     linear-gradient(rgb(255 255 255 / 0.025) 1px, transparent 1px),
     linear-gradient(90deg, rgb(255 255 255 / 0.025) 1px, transparent 1px);
@@ -55,10 +53,10 @@ input,
 select,
 textarea,
 button {
-  font-size: 16px; /* stops iOS zooming on focus */
+  font-size: 16px; /* no iOS zoom */
 }
 
-/* native date/time picker icons are dark-on-dark otherwise */
+/* visible picker icon */
 input::-webkit-calendar-picker-indicator {
   filter: invert(0.8);
 }

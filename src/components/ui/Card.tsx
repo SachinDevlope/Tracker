@@ -7,7 +7,6 @@ export function Card({ className, ...props }: ComponentProps<"div">) {
   return <div className={cn(cardStyles, className)} {...props} />;
 }
 
-// Card with a title bar like an editor / terminal window
 export function Window({ title, className, children }: { title: string; className?: string; children: React.ReactNode }) {
   return (
     <div className={cn(cardStyles, "overflow-hidden", className)}>
@@ -35,7 +34,6 @@ export function StatTile({ value, label, className }: { value: React.ReactNode; 
   );
 }
 
-// Section heading styled as a code comment
 export function SectionLabel({ children }: { children: React.ReactNode }) {
   return <h2 className="text-sm text-muted">{"// "}{children}</h2>;
 }

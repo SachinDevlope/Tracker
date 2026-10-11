@@ -3,7 +3,6 @@
 import { cn } from "@/lib/cn";
 import { STATUSES, STATUS_META, type Status } from "../status";
 
-// Radio-style grid; submits as "status" inside a form
 export function StatusPicker({
   value,
   onChange,

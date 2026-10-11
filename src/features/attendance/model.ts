@@ -6,7 +6,6 @@ import { NOTE_MAX } from "./types";
 
 const DaySchema = new Schema(
   {
-    // One document per day, stored as YYYY-MM-DD so it never shifts with timezones
     date: { type: String, required: true, unique: true, match: DATE_RE },
     status: { type: String, enum: STATUSES, required: true },
     checkInAt: { type: Date, default: null },

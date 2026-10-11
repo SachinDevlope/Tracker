@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
-// Self-hosted (from @fontsource-variable) so the build never needs to reach Google Fonts
+// Self-hosted: Google Fonts unreachable here
 const mono = localFont({
   src: [
     { path: "../../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2", style: "normal" },
@@ -29,7 +29,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${mono.variable} h-full antialiased`}>
-      {/* browser extensions (e.g. ColorZilla) add attributes to <body>; don't warn about those */}
+      {/* extensions add <body> attrs */}
       <body className="min-h-full" suppressHydrationWarning>
         {children}
       </body>

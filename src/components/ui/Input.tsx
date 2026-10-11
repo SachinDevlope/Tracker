@@ -12,7 +12,6 @@ export function Textarea({ className, ...props }: ComponentProps<"textarea">) {
   return <textarea className={cn(fieldStyles, className)} {...props} />;
 }
 
-// Label rendered like an object key: `check_in:`
 export function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block space-y-1 text-sm">

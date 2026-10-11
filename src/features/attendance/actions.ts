@@ -8,7 +8,6 @@ import { parseDayForm } from "./validation";
 
 export type SaveDayState = { error?: string; savedAt?: number } | undefined;
 
-// Bound with the date in the component: saveDayAction.bind(null, date)
 export async function saveDayAction(date: string, _prev: SaveDayState, formData: FormData): Promise<SaveDayState> {
   await requireAuth();
   if (!isDateString(date)) return { error: "Invalid date" };
@@ -27,7 +26,7 @@ export async function clearDayAction(date: string) {
   revalidatePath("/", "layout");
 }
 
-// Timestamps come from the server clock, never from the client
+// Server clock only
 export async function checkInAction() {
   await requireAuth();
   await checkIn(today(), new Date());

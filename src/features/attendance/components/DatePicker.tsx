@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { buttonStyles } from "@/components/ui/Button";
 
-// Calendar icon button that opens the native date picker and navigates to ?date=
 export function DatePicker({ value }: { value: string }) {
   const router = useRouter();
   return (

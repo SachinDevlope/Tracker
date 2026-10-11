@@ -1,4 +1,3 @@
-// Loading placeholder shown while a page's data streams in
 export function ListSkeleton({ rows = 4 }: { rows?: number }) {
   return (
     <div className="space-y-2" aria-busy="true" aria-label="Loading">

@@ -6,7 +6,6 @@ import { STATUS_META } from "@/features/attendance/status";
 import { formatDuration, workedMinutes } from "@/features/attendance/time";
 import type { DayEntry } from "@/features/attendance/types";
 
-// Newest first; each row opens that day's editor
 export function EntryList({ entries }: { entries: DayEntry[] }) {
   return (
     <ul className="space-y-2">

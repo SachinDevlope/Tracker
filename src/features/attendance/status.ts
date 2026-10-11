@@ -1,15 +1,13 @@
-// Client-safe constants shared by UI, model, calendar and reports
-
 export const STATUSES = ["present", "half_day", "leave", "absent", "holiday"] as const;
 export type Status = (typeof STATUSES)[number];
 
 type Meta = {
   label: string;
   short: string;
-  credit: number; // how much of a working day it counts as attended
+  credit: number; // attended fraction
   textClass: string;
-  activeClass: string; // selected button
-  cellClass: string; // calendar cell
+  activeClass: string;
+  cellClass: string;
 };
 
 export const STATUS_META: Record<Status, Meta> = {
@@ -28,5 +26,5 @@ export function emptyCounts(): Record<Status, number> {
   return { present: 0, half_day: 0, leave: 0, absent: 0, holiday: 0 };
 }
 
-// Days off by default (0 = Sunday, 6 = Saturday). Weekends are only shaded, never counted as absent.
+// 0 = Sun, 6 = Sat; shaded only
 export const WEEKEND_DAYS = [0, 6];

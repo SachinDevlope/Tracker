@@ -15,7 +15,6 @@ function useIsActive() {
   return (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 }
 
-// Editor-style file tabs on tablets and up
 export function DesktopNav() {
   const isActive = useIsActive();
   return (
@@ -38,7 +37,6 @@ export function DesktopNav() {
   );
 }
 
-// Fixed bottom tab bar on phones
 export function MobileTabBar() {
   const isActive = useIsActive();
   return (

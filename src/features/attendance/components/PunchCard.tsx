@@ -16,7 +16,6 @@ function Line({ label, value, accent }: { label: string; value: string; accent?:
   );
 }
 
-// Check-in / check-out timestamps. Buttons only on today; past days are read-only.
 export function PunchCard({ entry, isToday, now }: { entry: DayEntry | null; isToday: boolean; now: string }) {
   const checkInAt = entry?.checkInAt ?? null;
   const checkOutAt = entry?.checkOutAt ?? null;

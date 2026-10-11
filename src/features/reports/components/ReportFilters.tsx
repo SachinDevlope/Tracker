@@ -3,7 +3,6 @@ import { Card } from "@/components/ui/Card";
 import { Field, Input } from "@/components/ui/Input";
 import type { DateRange } from "../range";
 
-// Plain GET form: works without JS and keeps the range in the URL
 export function ReportFilters({ from, to }: DateRange) {
   return (
     <Card className="p-4">

@@ -7,7 +7,7 @@ import type { DayEntry } from "@/features/attendance/types";
 
 const WEEK_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-// Monday-first month grid; each day links to its editor
+// Monday-first
 export function MonthGrid({ month, entries, today }: { month: string; entries: DayEntry[]; today: string }) {
   const byDate = new Map(entries.map((e) => [e.date, e]));
   const days = datesBetween(`${month}-01`, monthEnd(month));

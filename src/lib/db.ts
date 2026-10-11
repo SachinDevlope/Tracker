@@ -4,7 +4,7 @@ import { env } from "./env";
 
 type Cache = { conn: typeof mongoose | null; promise: Promise<typeof mongoose> | null };
 
-// Reuse the connection across hot reloads and serverless invocations.
+// Reuse connection across hot reloads
 const globalCache = globalThis as unknown as { mongoose?: Cache };
 const cache: Cache = globalCache.mongoose ?? { conn: null, promise: null };
 globalCache.mongoose = cache;

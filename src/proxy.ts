@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE, verifySessionToken } from "@/features/auth/token";
 
-// Every page and API route requires login, except /login itself.
+// Quick redirect only; requireAuth does the real check
 export async function proxy(request: NextRequest) {
   const token = request.cookies.get(SESSION_COOKIE)?.value;
   if (await verifySessionToken(token, process.env.AUTH_SECRET)) {

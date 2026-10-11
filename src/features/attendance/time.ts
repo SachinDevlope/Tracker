@@ -1,4 +1,3 @@
-// Minutes between two ISO timestamps (0 if either is missing)
 export function workedMinutes(checkInAt: string | null, checkOutAt: string | null) {
   if (!checkInAt || !checkOutAt) return 0;
   const diff = Date.parse(checkOutAt) - Date.parse(checkInAt);

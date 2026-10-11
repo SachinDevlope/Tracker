@@ -5,7 +5,7 @@ import type { DayEntry } from "@/features/attendance/types";
 
 function csvCell(value: string | number) {
   const s = String(value);
-  // Neutralise leading formula characters so spreadsheets don't execute them
+  // Block spreadsheet formulas
   const safe = /^[=+\-@]/.test(s) ? `'${s}` : s;
   return `"${safe.replace(/"/g, '""')}"`;
 }
@@ -26,6 +26,6 @@ const COLUMNS: [string, (e: DayEntry) => string | number][] = [
 export function entriesToCsv(entries: DayEntry[]) {
   const header = COLUMNS.map(([title]) => csvCell(title)).join(",");
   const lines = entries.map((e) => COLUMNS.map(([, get]) => csvCell(get(e))).join(","));
-  // BOM so Excel reads UTF-8 correctly
+  // BOM for Excel
   return "﻿" + [header, ...lines].join("\r\n");
 }

@@ -20,7 +20,7 @@ async function TodayContent({ searchParams }: { searchParams: PageProps<"/">["se
     <div className="space-y-4">
       <DayNavigator date={date} today={now} />
       <PunchCard entry={entry} isToday={date === now} now={new Date().toISOString()} />
-      {/* key resets the form when the saved entry changes (e.g. after check in) */}
+      {/* remount when entry changes */}
       <DayEditor key={`${date}:${entry?.status}:${entry?.note}`} date={date} entry={entry} />
       <SectionLabel>{formatMonth(monthOf(now)).toLowerCase()} so far</SectionLabel>
       <SummaryTiles summary={summarize(monthEntries)} />

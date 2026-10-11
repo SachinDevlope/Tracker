@@ -4,7 +4,7 @@ import { DayModel, type DayDoc } from "./model";
 import type { Status } from "./status";
 import type { DayEntry, DayInput } from "./types";
 
-// Data access only: no auth, no cache revalidation. Callers handle those.
+// DB access only; callers handle auth
 
 function toEntry(doc: DayDoc): DayEntry {
   return {
@@ -30,7 +30,6 @@ export async function listDays(from: string, to: string): Promise<DayEntry[]> {
   return docs.map(toEntry);
 }
 
-// Updates status + note only; timestamps are never edited by hand
 export async function saveDay(date: string, input: DayInput) {
   await connectDB();
   await DayModel.updateOne({ date }, { $set: input }, { upsert: true, runValidators: true });
@@ -41,7 +40,7 @@ export async function deleteDay(date: string) {
   await DayModel.deleteOne({ date });
 }
 
-// Check in once per day; marks the day "present" if nothing was set yet
+// Once per day; new day defaults to present
 export async function checkIn(date: string, at: Date) {
   await connectDB();
   try {
@@ -51,12 +50,11 @@ export async function checkIn(date: string, at: Date) {
       { upsert: true },
     );
   } catch (err) {
-    // Upsert hits the unique index when the day is already checked in: nothing to do
+    // Already checked in
     if ((err as { code?: number }).code !== 11000) throw err;
   }
 }
 
-// Check out only after checking in, and only once
 export async function checkOut(date: string, at: Date) {
   await connectDB();
   await DayModel.updateOne({ date, checkInAt: { $ne: null }, checkOutAt: null }, { $set: { checkOutAt: at } });

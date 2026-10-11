@@ -11,13 +11,12 @@ export function checkPassword(password: string) {
 
 export async function isLoggedIn() {
   const token = (await cookies()).get(SESSION_COOKIE)?.value;
-  // Expiry check reads the clock; tell Next this must run per request, not at prerender
+  // Clock read must run per request
   await connection();
   return verifySessionToken(token, env.AUTH_SECRET);
 }
 
-// Use at the top of every page, action and route that touches data.
-// proxy.ts only does an optimistic redirect; this is the real check.
+// Real auth check (proxy only redirects)
 export async function requireAuth() {
   if (!(await isLoggedIn())) redirect("/login");
 }

@@ -6,8 +6,7 @@ export const RATE_GOOD = 90;
 
 export type Summary = ReturnType<typeof summarize>;
 
-// Attendance % = credited days (office + ½ half days) ÷ working days marked.
-// Holidays and leave don't count against you, so they're left out of the denominator.
+// % = attended / (marked - leave - holiday)
 export function summarize(entries: DayEntry[]) {
   const counts = emptyCounts();
   let attended = 0;
