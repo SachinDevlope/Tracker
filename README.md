@@ -1,6 +1,6 @@
 # attendance.log
 
-A personal work attendance tracker for one person. Tap check in when you start work and check out when you finish. The app saves the exact time of each tap, marks each workday's status (office, half day, leave, absent or holiday), and works out your hours and an attendance percentage.
+A personal work attendance tracker for one person. Tap check in when you start work and check out when you finish. The app saves the exact time of each tap, marks each workday's status (office, half day, leave, absent or holiday), and works out your hours and an attendance percentage. It also tracks your daily expenses and the money you owe people.
 
 Built with Next.js 16 (App Router), Tailwind CSS v4 and MongoDB (Mongoose). The dark UI looks like a code editor, and the layout works on phones.
 
@@ -15,9 +15,19 @@ Built with Next.js 16 (App Router), Tailwind CSS v4 and MongoDB (Mongoose). The 
   - Use ‹ › or the calendar icon to look at a past day and change its status or note. Past days show their timestamps read-only.
   - Shows a summary for the month so far.
 - **Calendar** (`/calendar`): a month grid coloured by status. Tap any day to edit it. The monthly summary sits below.
+- **Expenses** (`/expenses`)
+  - Add an expense with an amount in ₹, a category, a date (defaults to today) and an optional note. After you save, the category and date stay selected so you can enter several in a row.
+  - Categories: `food`, `groceries`, `transport`, `bills`, `rent`, `shopping`, `health`, `fun`, `other`.
+  - For each month: the total, the daily average (days so far in the current month), a breakdown by category with bars, and a list grouped by day. `rm` deletes an entry. You can export the month as a CSV.
+  - Amounts are stored as whole paise, so totals never have rounding errors.
+- **Debts** (`/debts`)
+  - Log money you owe: who you owe, the amount, the date you borrowed it, an optional due date and a note.
+  - Record repayments in parts with `pay`. The `full` button fills in whatever is left. A payment can't be more than the amount still owed or dated before the borrow date. `log(n)` shows the payment history, and `×` undoes a payment.
+  - Each debt shows how much is left, a progress bar of how much is repaid, and a due badge: red when overdue, amber when due within 7 days.
+  - At the top: the total you still owe, the total repaid, how many debts are overdue, and a breakdown by person. Open debts are sorted by due date. Paid-off debts move to a collapsed **settled** section.
 - **Reports** (`/reports`): pick any date range to see totals, the attendance %, total and average hours, and every entry. You can export the range as a CSV.
 - **Login**: a single password. The session is a signed, httpOnly cookie that lasts 30 days.
-- **Phone friendly**: bottom tab bar, large tap targets, and it can be installed to your home screen.
+- **Phone friendly**: bottom tab bar (file-style tabs in the header on wide screens), large tap targets, and it can be installed to your home screen.
 
 ### How the numbers work
 
@@ -81,18 +91,23 @@ src/
   app/                          routing only: thin pages that compose features
     (app)/page.tsx              Today
     (app)/calendar/page.tsx     Calendar
+    (app)/expenses/page.tsx     Expenses
+    (app)/debts/page.tsx        Debts
     (app)/reports/page.tsx      Reports
     login/page.tsx
-    api/export/route.ts         CSV download
+    api/export/route.ts         attendance CSV
+    api/expenses/export/        expenses CSV
   features/
     auth/                       token.ts (signing) · session.ts (cookie + requireAuth) · actions · components
     attendance/                 model → service → actions, plus validation, time, summary, status and UI components
-    calendar/components/        MonthGrid, MonthNavigator
+    calendar/components/        MonthGrid
+    debts/                      model (payments embedded in each debt) → service → actions, plus validation, summary (due state) and UI components
+    expenses/                   model → service → actions, plus validation, categories, summary and UI components
     reports/                    range parsing, CSV export, filters and entry list
   components/
-    ui/                         reusable primitives: Button, Input, Card/Window, StatTile, Skeleton
+    ui/                         reusable primitives: Button, Input, Card/Window, StatTile, ChipPicker, MoneyInput, MonthNavigator, Skeleton
     layout/                     AppShell, Nav
-  lib/                          env, db connection, date helpers, cn
+  lib/                          env, db connection, date helpers, money (₹, stored as paise), CSV helper, cn
   proxy.ts                      sends you to /login when you are not signed in
 ```
 

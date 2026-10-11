@@ -1,35 +1,10 @@
 "use client";
 
-import { cn } from "@/lib/cn";
+import { ChipPicker } from "@/components/ui/ChipPicker";
 import { STATUSES, STATUS_META, type Status } from "../status";
 
-export function StatusPicker({
-  value,
-  onChange,
-  name = "status",
-}: {
-  value?: Status;
-  onChange: (status: Status) => void;
-  name?: string;
-}) {
-  return (
-    <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Status">
-      <input type="hidden" name={name} value={value ?? ""} />
-      {STATUSES.map((s) => (
-        <button
-          key={s}
-          type="button"
-          role="radio"
-          aria-checked={value === s}
-          onClick={() => onChange(s)}
-          className={cn(
-            "h-12 rounded-md border text-sm font-semibold transition-colors",
-            value === s ? STATUS_META[s].activeClass : "border-border bg-background text-muted hover:border-muted",
-          )}
-        >
-          {value === s ? `"${STATUS_META[s].label}"` : STATUS_META[s].label}
-        </button>
-      ))}
-    </div>
-  );
+const OPTIONS = STATUSES.map((s) => ({ value: s, label: STATUS_META[s].label, activeClass: STATUS_META[s].activeClass }));
+
+export function StatusPicker({ value, onChange }: { value?: Status; onChange: (status: Status) => void }) {
+  return <ChipPicker name="status" label="Status" options={OPTIONS} value={value} onChange={onChange} />;
 }

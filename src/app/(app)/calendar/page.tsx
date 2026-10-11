@@ -6,7 +6,7 @@ import { listDays } from "@/features/attendance/service";
 import { summarize } from "@/features/attendance/summary";
 import { SummaryTiles } from "@/features/attendance/components/SummaryTiles";
 import { MonthGrid } from "@/features/calendar/components/MonthGrid";
-import { MonthNavigator } from "@/features/calendar/components/MonthNavigator";
+import { MonthNavigator } from "@/components/ui/MonthNavigator";
 import { monthEnd, monthOf, today, validMonth } from "@/lib/date";
 
 async function CalendarContent({ searchParams }: { searchParams: PageProps<"/calendar">["searchParams"] }) {
@@ -17,7 +17,7 @@ async function CalendarContent({ searchParams }: { searchParams: PageProps<"/cal
 
   return (
     <div className="space-y-4">
-      <MonthNavigator month={month} currentMonth={monthOf(now)} />
+      <MonthNavigator basePath="/calendar" month={month} currentMonth={monthOf(now)} />
       <MonthGrid month={month} entries={entries} today={now} />
       <SectionLabel>month summary — tap a day to edit</SectionLabel>
       <SummaryTiles summary={summarize(entries)} />
