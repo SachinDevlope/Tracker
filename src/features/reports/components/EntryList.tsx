@@ -19,6 +19,7 @@ export function EntryList({ entries }: { entries: DayEntry[] }) {
               <div className="font-medium">{formatDate(e.date, "short")}</div>
               <div className="truncate text-xs text-muted">
                 {e.checkInAt ? `${formatClock(e.checkInAt)} → ${formatClock(e.checkOutAt)}` : "// no punch"}
+                {e.late && <span className="text-syn-red"> · late</span>}
                 {e.note && ` · ${e.note}`}
               </div>
             </div>

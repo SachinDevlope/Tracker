@@ -32,7 +32,7 @@ export function MonthGrid({ month, entries, today }: { month: string; entries: D
               key={date}
               href={`/?date=${date}`}
               className={cn(
-                "flex aspect-square flex-col items-center justify-center rounded-md text-sm",
+                "relative flex aspect-square flex-col items-center justify-center rounded-md text-sm",
                 entry ? STATUS_META[entry.status].cellClass : isWeekend ? "bg-background/40 text-muted/60" : "border border-border bg-background",
                 date === today && "ring-2 ring-syn-green ring-offset-1 ring-offset-card",
                 date > today && !entry && "opacity-50",
@@ -40,6 +40,7 @@ export function MonthGrid({ month, entries, today }: { month: string; entries: D
             >
               <span className="font-semibold tabular-nums">{Number(date.slice(8))}</span>
               {entry && <span className="text-[9px] leading-none opacity-90">{STATUS_META[entry.status].short}</span>}
+              {entry?.late && <span className="absolute top-1 right-1 h-1.5 w-1.5 rounded-full bg-syn-red" title="late" />}
             </Link>
           );
         })}

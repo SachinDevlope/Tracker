@@ -12,10 +12,12 @@ export function summarize(entries: DayEntry[]) {
   let attended = 0;
   let totalMinutes = 0;
   let timedDays = 0;
+  let late = 0;
 
   for (const e of entries) {
     counts[e.status]++;
     attended += STATUS_META[e.status].credit;
+    if (e.late) late++;
     const mins = workedMinutes(e.checkInAt, e.checkOutAt);
     if (mins) {
       totalMinutes += mins;
@@ -29,6 +31,7 @@ export function summarize(entries: DayEntry[]) {
 
   return {
     counts,
+    late,
     marked,
     attended,
     workingDays,

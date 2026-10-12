@@ -8,7 +8,7 @@ import { DayEditor } from "@/features/attendance/components/DayEditor";
 import { DayNavigator } from "@/features/attendance/components/DayNavigator";
 import { PunchCard } from "@/features/attendance/components/PunchCard";
 import { SummaryTiles } from "@/features/attendance/components/SummaryTiles";
-import { formatMonth, monthOf, monthStart, today, validDate } from "@/lib/date";
+import { formatClock, formatMonth, monthOf, monthStart, today, validDate } from "@/lib/date";
 
 async function TodayContent({ searchParams }: { searchParams: PageProps<"/">["searchParams"] }) {
   await requireAuth();
@@ -19,9 +19,16 @@ async function TodayContent({ searchParams }: { searchParams: PageProps<"/">["se
   return (
     <div className="space-y-4">
       <DayNavigator date={date} today={now} />
-      <PunchCard entry={entry} isToday={date === now} now={new Date().toISOString()} />
+      {date === now && <PunchCard entry={entry} isToday now={new Date().toISOString()} />}
       {/* remount when entry changes */}
-      <DayEditor key={`${date}:${entry?.status}:${entry?.note}`} date={date} entry={entry} />
+      <DayEditor
+        key={`${date}:${JSON.stringify(entry)}`}
+        date={date}
+        entry={entry}
+        backdated={date < now}
+        defaultIn={entry?.checkInAt ? formatClock(entry.checkInAt) : ""}
+        defaultOut={entry?.checkOutAt ? formatClock(entry.checkOutAt) : ""}
+      />
       <SectionLabel>{formatMonth(monthOf(now)).toLowerCase()} so far</SectionLabel>
       <SummaryTiles summary={summarize(monthEntries)} />
     </div>

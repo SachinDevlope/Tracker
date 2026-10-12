@@ -22,6 +22,23 @@ export function formatClock(iso: string | null) {
   }).format(new Date(iso));
 }
 
+// Local date + "HH:MM" in APP_TIMEZONE → Date
+export function zonedTime(date: string, time: string) {
+  const guess = Date.parse(`${date}T${time}:00Z`);
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: env.APP_TIMEZONE,
+    hourCycle: "h23",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).formatToParts(new Date(guess));
+  const get = (type: string) => Number(parts.find((p) => p.type === type)?.value);
+  const asLocal = Date.UTC(get("year"), get("month") - 1, get("day"), get("hour"), get("minute"));
+  return new Date(guess - (asLocal - guess));
+}
+
 function utc(date: string) {
   return new Date(`${date}T00:00:00Z`);
 }

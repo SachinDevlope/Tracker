@@ -12,6 +12,7 @@ export function entriesToCsv(entries: DayEntry[]) {
     ["Status", (e) => STATUS_META[e.status].label],
     ["Check In", (e) => time(e.checkInAt)],
     ["Check Out", (e) => time(e.checkOutAt)],
+    ["Late", (e) => (e.late ? "yes" : "")],
     ["Hours", (e) => (workedMinutes(e.checkInAt, e.checkOutAt) / 60).toFixed(2)],
     ["Check In (ISO)", (e) => e.checkInAt ?? ""],
     ["Check Out (ISO)", (e) => e.checkOutAt ?? ""],

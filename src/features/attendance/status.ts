@@ -26,5 +26,11 @@ export function emptyCounts(): Record<Status, number> {
   return { present: 0, half_day: 0, leave: 0, absent: 0, holiday: 0 };
 }
 
-// 0 = Sun, 6 = Sat; shaded only
-export const WEEKEND_DAYS = [0, 6];
+// Shift 09:30–19:00, Mon–Sat
+export const SHIFT = { start: "09:30", end: "19:00" };
+
+// Check-in after this (local) = late
+export const LATE_AFTER = "09:45";
+
+// Days off (0 = Sun); shaded only
+export const WEEKEND_DAYS = [0];

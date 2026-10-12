@@ -12,9 +12,10 @@ Built with Next.js 16 (App Router), Tailwind CSS v4 and MongoDB (Mongoose). The 
   - While you're checked in, the card shows the hours worked so far.
   - Checking in marks the day `office` automatically.
   - The day editor changes only the status and the note. `rm` deletes the whole day, timestamps included.
-  - Use ‹ › or the calendar icon to look at a past day and change its status or note. Past days show their timestamps read-only.
+  - **Backdated days:** use ‹ › or the calendar icon to open a past day. Past days add `check_in`/`check_out` time fields, which are saved as timestamps in `APP_TIMEZONE`. If check-out is earlier than check-in, it counts as the next day, for a night shift. Today only uses the punch buttons, and future days take a status and note only.
   - Shows a summary for the month so far.
-- **Calendar** (`/calendar`): a month grid coloured by status. Tap any day to edit it. The monthly summary sits below.
+- **Calendar** (`/calendar`): a month grid coloured by status, with a red dot on late days. Tap any day to edit it. The monthly summary sits below.
+  - `+ backfill()` fills a past date range in one go: pick a status and check-in/out times (prefilled with the 09:30–19:00 shift), and choose whether to skip Sundays. Days you have already logged are never overwritten, and it can fill at most 93 days at a time.
 - **Expenses** (`/expenses`)
   - Add an expense with an amount in ₹, a category, a date (defaults to today) and an optional note. After you save, the category and date stay selected so you can enter several in a row.
   - Categories: `food`, `groceries`, `transport`, `bills`, `rent`, `shopping`, `health`, `fun`, `other`.
@@ -40,9 +41,13 @@ Built with Next.js 16 (App Router), Tailwind CSS v4 and MongoDB (Mongoose). The 
 
 `attendance % = (office + ½ × half_day) ÷ (marked days − leave − holiday)`
 
+**Shift:** Monday to Saturday, 09:30–19:00. Wherever you type times, a `shift` button fills in 09:30 → 19:00.
+
+**Late:** a check-in after **09:45** local time (15 minutes of grace) marks the day late automatically. This applies to the punch button, typed backdated times and backfill. Late days still count as attended, but show a `late` badge, a red dot on the calendar, a late count in the summaries and a Late column in the CSV.
+
 Hours worked = check-out timestamp − check-in timestamp. The CSV export has local times plus the raw ISO timestamps.
 
-Weekends (Saturday and Sunday) are only shaded on the calendar. They never count as absent. To change which days are weekends, edit `WEEKEND_DAYS` in `src/features/attendance/status.ts`.
+Sunday is the day off. It is only shaded on the calendar and never counts as absent. To change the shift times, late cut-off or days off, edit `SHIFT`, `LATE_AFTER` and `WEEKEND_DAYS` in `src/features/attendance/status.ts`.
 
 ## Setup
 

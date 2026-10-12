@@ -8,8 +8,17 @@ import { clearDayAction, saveDayAction } from "../actions";
 import type { Status } from "../status";
 import { NOTE_MAX, type DayEntry } from "../types";
 import { StatusPicker } from "./StatusPicker";
+import { TimeRangeFields } from "./TimeRangeFields";
 
-export function DayEditor({ date, entry }: { date: string; entry: DayEntry | null }) {
+type Props = {
+  date: string;
+  entry: DayEntry | null;
+  backdated: boolean;
+  defaultIn?: string;
+  defaultOut?: string;
+};
+
+export function DayEditor({ date, entry, backdated, defaultIn, defaultOut }: Props) {
   const [state, action, saving] = useActionState(saveDayAction.bind(null, date), undefined);
   const [clearing, startClear] = useTransition();
   const [status, setStatus] = useState<Status | undefined>(entry?.status);
@@ -20,6 +29,8 @@ export function DayEditor({ date, entry }: { date: string; entry: DayEntry | nul
         <Field label="status">
           <StatusPicker value={status} onChange={setStatus} />
         </Field>
+
+        {backdated && <TimeRangeFields defaultIn={defaultIn} defaultOut={defaultOut} />}
 
         <Field label="note">
           <Textarea name="note" defaultValue={entry?.note} maxLength={NOTE_MAX} rows={2} placeholder="// optional — client visit, sick, travel…" />

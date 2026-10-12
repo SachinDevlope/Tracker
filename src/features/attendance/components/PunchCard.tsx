@@ -5,11 +5,11 @@ import { checkInAction, checkOutAction } from "../actions";
 import { formatDuration, workedMinutes } from "../time";
 import type { DayEntry } from "../types";
 
-function Line({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+function Line({ label, value, accent, late }: { label: string; value: string; accent?: boolean; late?: boolean }) {
   return (
     <div className="flex justify-between gap-4">
       <span className="text-muted">{label}</span>
-      <span className={accent ? "font-semibold tabular-nums text-syn-orange" : "font-semibold tabular-nums text-foreground"}>
+      <span className={late ? "font-semibold tabular-nums text-syn-red" : accent ? "font-semibold tabular-nums text-syn-orange" : "font-semibold tabular-nums text-foreground"}>
         {value}
       </span>
     </div>
@@ -29,7 +29,7 @@ export function PunchCard({ entry, isToday, now }: { entry: DayEntry | null; isT
           <span className="text-syn-green">❯</span> <span className="text-syn-blue">punch</span> --log
         </p>
         <div className="space-y-1 border-l-2 border-border pl-3">
-          <Line label="check_in" value={formatClock(checkInAt)} />
+          <Line label="check_in" value={formatClock(checkInAt) + (entry?.late ? " · late" : "")} late={entry?.late} />
           <Line label="check_out" value={formatClock(checkOutAt)} />
           <Line label={running ? "worked (running)" : "worked"} value={formatDuration(worked)} accent />
         </div>

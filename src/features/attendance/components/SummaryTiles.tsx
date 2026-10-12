@@ -24,6 +24,7 @@ export function SummaryTiles({ summary }: { summary: Summary }) {
             value={<span className={STATUS_META[s].textClass}>{summary.counts[s]}</span>}
           />
         ))}
+        <StatTile label="late" value={<span className={summary.late ? "text-syn-red" : "text-muted"}>{summary.late}</span>} />
       </div>
     </div>
   );
