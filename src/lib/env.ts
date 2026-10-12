@@ -24,4 +24,10 @@ export const env = {
   get APP_TIMEZONE() {
     return process.env.APP_TIMEZONE || "UTC";
   },
+  get GROQ_API_KEY() {
+    return process.env.GROQ_API_KEY || "";
+  },
+  get GROQ_MODEL() {
+    return process.env.GROQ_MODEL || "openai/gpt-oss-120b";
+  },
 };

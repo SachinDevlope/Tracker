@@ -9,6 +9,7 @@ import { groupByDate, summarizeExpenses } from "@/features/expenses/summary";
 import { AddExpenseForm } from "@/features/expenses/components/AddExpenseForm";
 import { ExpenseList } from "@/features/expenses/components/ExpenseList";
 import { ExpenseSummaryView } from "@/features/expenses/components/ExpenseSummaryView";
+import { StatementImport } from "@/features/statements/components/StatementImport";
 import { formatDate, monthEnd, monthOf, today, validMonth } from "@/lib/date";
 
 async function ExpensesContent({ searchParams }: { searchParams: PageProps<"/expenses">["searchParams"] }) {
@@ -27,6 +28,7 @@ async function ExpensesContent({ searchParams }: { searchParams: PageProps<"/exp
   return (
     <div className="space-y-4">
       <AddExpenseForm today={now} />
+      <StatementImport />
       <MonthNavigator basePath="/expenses" month={month} currentMonth={currentMonth} />
       <ExpenseSummaryView summary={summarizeExpenses(expenses, daysElapsed)} />
       <div className="flex items-center justify-between">

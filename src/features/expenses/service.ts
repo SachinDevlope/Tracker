@@ -30,6 +30,13 @@ export async function createExpense(input: ExpenseInput) {
   await ExpenseModel.create(input);
 }
 
+export async function createExpenses(inputs: ExpenseInput[]) {
+  if (!inputs.length) return 0;
+  await connectDB();
+  const docs = await ExpenseModel.insertMany(inputs);
+  return docs.length;
+}
+
 export async function deleteExpense(id: string) {
   if (!isValidObjectId(id)) return;
   await connectDB();

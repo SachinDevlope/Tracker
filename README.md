@@ -21,6 +21,7 @@ Built with Next.js 16 (App Router), Tailwind CSS v4 and MongoDB (Mongoose). The 
   - Categories: `food`, `groceries`, `transport`, `bills`, `rent`, `shopping`, `health`, `fun`, `other`.
   - For each month: the total, the daily average (days so far in the current month), a breakdown by category with bars, and a list grouped by day. `rm` deletes an entry. You can export the month as a CSV.
   - Amounts are stored as whole paise, so totals never have rounding errors.
+  - **Import from a bank statement:** `+ import_statement()` takes your bank account statement PDF, plus its password if it's locked. The server pulls the text out with PDF.js, keeping the table columns aligned. A free Groq AI model (GPT-OSS 120B) then lists every debit with a suggested category; credits such as salary and refunds are skipped. You review the list and can untick rows or change categories. Rows that match an expense you've already saved (same date and amount) start unticked. Then `import` saves the rest. The PDF is processed in memory and never stored, but the statement text is sent to Groq. Long statements are split into parts, and the app waits automatically if it hits Groq's free-tier rate limit. Scanned (image-only) PDFs have no text, so they can't be read.
 - **Debts** (`/debts`)
   - Log money you owe: who you owe, the amount, the date you borrowed it, an optional due date and a note.
   - Record repayments in parts with `pay`. The `full` button fills in whatever is left. A payment can't be more than the amount still owed or dated before the borrow date. `log(n)` shows the payment history, and `×` undoes a payment.
@@ -63,6 +64,8 @@ Sunday is the day off. It is only shaded on the calendar and never counts as abs
    | `MONGODB_DB` | Database name (default `attendance`) |
    | `ADMIN_PASSWORD` | Your login password |
    | `AUTH_SECRET` | Random string of at least 32 characters, used to sign the session cookie |
+   | `GROQ_API_KEY` | Free API key from https://console.groq.com/keys, used to import bank statements |
+   | `GROQ_MODEL` | Optional Groq model override (default `openai/gpt-oss-120b`) |
    | `APP_TIMEZONE` | IANA timezone (IANA = the standard timezone database) that decides what "today" is and how timestamps are displayed, e.g. `Asia/Kolkata` |
 
    Generate a secret:
@@ -102,11 +105,13 @@ src/
     login/page.tsx
     api/export/route.ts         attendance CSV
     api/expenses/export/        expenses CSV
+    api/expenses/statement/     statement PDF upload → extracted debits
   features/
     auth/                       token.ts (signing) · session.ts (cookie + requireAuth) · actions · components
     attendance/                 model → service → actions, plus validation, time, summary, status and UI components
     calendar/components/        MonthGrid
     debts/                      model (payments embedded in each debt) → service → actions, plus validation, summary (due state) and UI components
+    statements/                 PDF → text lines (pdf.ts), Groq client, AI extraction + duplicate check, import action, review UI
     expenses/                   model → service → actions, plus validation, categories, summary and UI components
     reports/                    range parsing, CSV export, filters and entry list
   components/
