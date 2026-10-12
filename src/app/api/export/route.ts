@@ -2,8 +2,8 @@ import type { NextRequest } from "next/server";
 import { csvResponse } from "@/lib/csv";
 import { isLoggedIn } from "@/features/auth/session";
 import { listDays } from "@/features/attendance/service";
-import { parseRange } from "@/features/reports/range";
-import { entriesToCsv } from "@/features/reports/csv";
+import { parseRange } from "@/features/dashboard/range";
+import { entriesToCsv } from "@/features/dashboard/csv";
 
 export async function GET(request: NextRequest) {
   if (!(await isLoggedIn())) return Response.json({ error: "Unauthorized" }, { status: 401 });

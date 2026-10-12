@@ -9,7 +9,7 @@ const LINKS = [
   { href: "/calendar", label: "calendar", file: "calendar.tsx", icon: "M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z" },
   { href: "/expenses", label: "expenses", file: "expenses.ts", icon: "M6 3h12M6 8h12M14 21L6 13h3a5 5 0 000-10" },
   { href: "/debts", label: "debts", file: "debts.ts", icon: "M3 7h18v12H3zM3 11h18M7 15h4M16 3l-4 4-4-4" },
-  { href: "/reports", label: "reports", file: "reports.csv", icon: "M4 20V10M10 20V4M16 20v-7M22 20H2" },
+  { href: "/dashboard", label: "dashboard", file: "dashboard.tsx", icon: "M4 20V10M10 20V4M16 20v-7M22 20H2" },
 ];
 
 function useIsActive() {
