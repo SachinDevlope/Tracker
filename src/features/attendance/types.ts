@@ -14,5 +14,5 @@ export type DayInput = Pick<DayEntry, "status" | "note"> & { checkInAt?: Date | 
 
 export type BackfillDay = { date: string; status: Status; checkInAt: Date | null; checkOutAt: Date | null };
 
-export const NOTE_MAX = 500;
+export const DAY_NOTE_MAX = 500;
 export const BACKFILL_MAX_DAYS = 93;

@@ -1,11 +1,9 @@
 import { datesBetween, isDateString, shiftDate, weekday, zonedTime } from "@/lib/date";
+import { field as get, noteError, type Result } from "@/lib/form";
 import { WEEKEND_DAYS, isStatus } from "./status";
-import { BACKFILL_MAX_DAYS, NOTE_MAX, type BackfillDay, type DayInput } from "./types";
-
-type Result<T> = { ok: true; data: T } | { ok: false; error: string };
+import { BACKFILL_MAX_DAYS, DAY_NOTE_MAX, type BackfillDay, type DayInput } from "./types";
 
 const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
-const get = (formData: FormData, key: string) => String(formData.get(key) ?? "").trim();
 
 // "HH:MM" pair → timestamps; check-out before check-in = next day (night shift)
 function parseTimes(date: string, inTime: string, outTime: string): Result<{ checkInAt: Date | null; checkOutAt: Date | null }> {
@@ -27,7 +25,8 @@ export function parseDayForm(formData: FormData, backdate?: string): Result<DayI
   const note = get(formData, "note");
 
   if (!isStatus(status)) return { ok: false, error: "Pick a status" };
-  if (note.length > NOTE_MAX) return { ok: false, error: `Note must be at most ${NOTE_MAX} characters` };
+  const noteErr = noteError(note, DAY_NOTE_MAX);
+  if (noteErr) return { ok: false, error: noteErr };
   if (!backdate) return { ok: true, data: { status, note } };
 
   const times = parseTimes(backdate, get(formData, "checkIn"), get(formData, "checkOut"));

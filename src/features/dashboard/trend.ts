@@ -1,12 +1,12 @@
 import { datesBetween, monthOf, shiftDate, weekday } from "@/lib/date";
 import type { DateRange } from "./range";
 
-export type Bucket = { key: string; label: string; value: number };
-export type Grain = "day" | "week" | "month";
+type Bucket = { key: string; label: string; value: number };
+type Grain = "day" | "week" | "month";
 
 const SHORT_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-export function grainFor({ from, to }: DateRange): Grain {
+function grainFor({ from, to }: DateRange): Grain {
   const days = datesBetween(from, to).length;
   return days <= 31 ? "day" : days <= 120 ? "week" : "month";
 }

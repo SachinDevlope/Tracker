@@ -1,7 +1,7 @@
 import { shiftDate } from "@/lib/date";
 import type { Debt } from "./types";
 
-export const DUE_SOON_DAYS = 7;
+const DUE_SOON_DAYS = 7;
 
 export type DueState = "settled" | "overdue" | "soon" | "ok" | "none";
 

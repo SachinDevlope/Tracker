@@ -9,6 +9,7 @@ const LINKS = [
   { href: "/calendar", label: "calendar", file: "calendar.tsx", icon: "M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z" },
   { href: "/expenses", label: "expenses", file: "expenses.ts", icon: "M6 3h12M6 8h12M14 21L6 13h3a5 5 0 000-10" },
   { href: "/debts", label: "debts", file: "debts.ts", icon: "M3 7h18v12H3zM3 11h18M7 15h4M16 3l-4 4-4-4" },
+  { href: "/tiffin", label: "tiffin", file: "tiffin.ts", icon: "M3 12h18a9 9 0 01-18 0zM8 8c0-1.5 1.5-1.5 1.5-3M14 8c0-1.5 1.5-1.5 1.5-3" },
   { href: "/dashboard", label: "dashboard", file: "dashboard.tsx", icon: "M4 20V10M10 20V4M16 20v-7M22 20H2" },
 ];
 
@@ -43,13 +44,13 @@ export function MobileTabBar() {
   const isActive = useIsActive();
   return (
     <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
-      <div className="mx-auto grid max-w-lg grid-cols-5">
+      <div className="mx-auto grid max-w-lg grid-cols-6">
         {LINKS.map((l) => (
           <Link
             key={l.href}
             href={l.href}
             className={cn(
-              "flex flex-col items-center gap-0.5 py-2 text-xs",
+              "flex flex-col items-center gap-0.5 py-2 text-[10px]",
               isActive(l.href) ? "text-syn-green" : "text-muted",
             )}
           >

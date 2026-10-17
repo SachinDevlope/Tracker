@@ -6,7 +6,7 @@ import { Window } from "@/components/ui/Card";
 import { Field, FormError, Textarea } from "@/components/ui/Input";
 import { clearDayAction, saveDayAction } from "../actions";
 import type { Status } from "../status";
-import { NOTE_MAX, type DayEntry } from "../types";
+import { DAY_NOTE_MAX, type DayEntry } from "../types";
 import { StatusPicker } from "./StatusPicker";
 import { TimeRangeFields } from "./TimeRangeFields";
 
@@ -33,11 +33,11 @@ export function DayEditor({ date, entry, backdated, defaultIn, defaultOut }: Pro
         {backdated && <TimeRangeFields defaultIn={defaultIn} defaultOut={defaultOut} />}
 
         <Field label="note">
-          <Textarea name="note" defaultValue={entry?.note} maxLength={NOTE_MAX} rows={2} placeholder="// optional — client visit, sick, travel…" />
+          <Textarea name="note" defaultValue={entry?.note} maxLength={DAY_NOTE_MAX} rows={2} placeholder="// optional — client visit, sick, travel…" />
         </Field>
 
         <FormError message={state?.error} />
-        {state?.savedAt && !state.error && <p className="text-sm text-syn-green">✔ saved</p>}
+        {state?.doneAt && !state.error && <p className="text-sm text-syn-green">✔ saved</p>}
 
         <div className="flex gap-2">
           <Button disabled={saving || !status} className="flex-1">

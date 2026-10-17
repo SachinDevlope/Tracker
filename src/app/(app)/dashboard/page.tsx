@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { BarChart } from "@/components/ui/BarChart";
+import { Collapsible } from "@/components/ui/Collapsible";
 import { EmptyState, ListCard, SectionLabel } from "@/components/ui/Card";
 import { ListSkeleton } from "@/components/ui/Skeleton";
 import { requireAuth } from "@/features/auth/session";
@@ -15,11 +16,14 @@ import { RangeFilters } from "@/features/dashboard/components/RangeFilters";
 import { listDebts } from "@/features/debts/service";
 import { dueState, summarizeDebts } from "@/features/debts/summary";
 import { DebtSummaryView } from "@/features/debts/components/DebtSummaryView";
+import { balanceDue, listMeals } from "@/features/tiffin/service";
+import { summarizeMeals } from "@/features/tiffin/summary";
+import { TiffinSummaryView } from "@/features/tiffin/components/TiffinSummaryView";
 import { listExpenses } from "@/features/expenses/service";
 import { summarizeExpenses } from "@/features/expenses/summary";
 import { ExpenseSummaryView } from "@/features/expenses/components/ExpenseSummaryView";
 import { cn } from "@/lib/cn";
-import { datesBetween, formatDate, today } from "@/lib/date";
+import { daysSoFar, formatDate, today } from "@/lib/date";
 import { formatMoney } from "@/lib/money";
 
 const GRAIN_LABEL = { day: "per day", week: "per week", month: "per month" };
@@ -42,14 +46,14 @@ async function DashboardContent({ searchParams }: { searchParams: PageProps<"/da
   await requireAuth();
   const now = today();
   const range = parseRange(await searchParams);
-  const [entries, expenses, debts] = await Promise.all([
+  const [entries, expenses, debts, meals, tiffinDue] = await Promise.all([
     listDays(range.from, range.to),
     listExpenses(range.from, range.to),
     listDebts(),
+    listMeals(range.from, range.to),
+    balanceDue(),
   ]);
 
-  // Average spend over days so far in range
-  const daysElapsed = range.from > now ? 0 : datesBetween(range.from, range.to < now ? range.to : now).length;
   const hours = bucketize(range, entries, (e) => e.date, (e) => workedMinutes(e.checkInAt, e.checkOutAt));
   const spend = bucketize(range, expenses, (e) => e.date, (e) => e.amount);
   const upcoming = debts
@@ -67,10 +71,14 @@ async function DashboardContent({ searchParams }: { searchParams: PageProps<"/da
       </Section>
 
       <Section title="spending" href="/expenses">
-        <ExpenseSummaryView summary={summarizeExpenses(expenses, daysElapsed)} />
+        <ExpenseSummaryView summary={summarizeExpenses(expenses, daysSoFar(range.from, range.to, now))} />
         {expenses.length > 0 && (
           <BarChart title={`spent ${GRAIN_LABEL[spend.grain]}`} bars={spend.buckets} format={formatMoney} barClass="bg-syn-orange" />
         )}
+      </Section>
+
+      <Section title="tiffin" href="/tiffin">
+        <TiffinSummaryView summary={summarizeMeals(meals)} due={tiffinDue} />
       </Section>
 
       <Section title="debts · as of today" href="/debts">
@@ -99,15 +107,9 @@ async function DashboardContent({ searchParams }: { searchParams: PageProps<"/da
         )}
       </Section>
 
-      <details className="group space-y-2">
-        <summary className="cursor-pointer list-none text-sm text-muted">
-          <span className="group-open:hidden">▸</span>
-          <span className="hidden group-open:inline">▾</span> attendance_log ({entries.length})
-        </summary>
-        <div className="mt-2">
-          {entries.length === 0 ? <EmptyState>{"// nothing logged in this range"}</EmptyState> : <EntryList entries={entries} />}
-        </div>
-      </details>
+      <Collapsible label={`attendance_log (${entries.length})`}>
+        {entries.length === 0 ? <EmptyState>{"// nothing logged in this range"}</EmptyState> : <EntryList entries={entries} />}
+      </Collapsible>
     </div>
   );
 }

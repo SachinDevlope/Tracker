@@ -9,5 +9,3 @@ export type Expense = {
 };
 
 export type ExpenseInput = Omit<Expense, "id">;
-
-export const EXPENSE_NOTE_MAX = 200;

@@ -4,7 +4,8 @@ import { revalidatePath } from "next/cache";
 import { requireAuth } from "@/features/auth/session";
 import { isCategory } from "@/features/expenses/categories";
 import { createExpenses } from "@/features/expenses/service";
-import { EXPENSE_NOTE_MAX, type ExpenseInput } from "@/features/expenses/types";
+import type { ExpenseInput } from "@/features/expenses/types";
+import { NOTE_MAX } from "@/lib/form";
 import { isDateString } from "@/lib/date";
 import { MAX_PAISE } from "@/lib/money";
 import { MAX_IMPORT_ROWS } from "./types";
@@ -26,7 +27,7 @@ export async function importExpensesAction(rows: Row[]): Promise<{ imported?: nu
       isCategory(r.category) &&
       typeof r.note === "string";
     if (!valid) return { error: "Some rows are invalid — re-upload the statement" };
-    inputs.push({ date: r.date, amount: r.amount, category: r.category as ExpenseInput["category"], note: r.note.trim().slice(0, EXPENSE_NOTE_MAX) });
+    inputs.push({ date: r.date, amount: r.amount, category: r.category as ExpenseInput["category"], note: r.note.trim().slice(0, NOTE_MAX) });
   }
 
   const imported = await createExpenses(inputs);

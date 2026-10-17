@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { EmptyState, SectionLabel } from "@/components/ui/Card";
+import { Collapsible } from "@/components/ui/Collapsible";
 import { ListSkeleton } from "@/components/ui/Skeleton";
 import { requireAuth } from "@/features/auth/session";
 import { listDebts } from "@/features/debts/service";
@@ -51,16 +52,11 @@ async function DebtsContent() {
       )}
 
       {settled.length > 0 && (
-        <details className="group space-y-2">
-          <summary className="cursor-pointer list-none text-sm text-muted">
-            <span className="inline-block transition-transform group-open:rotate-90">›</span> {settled.length} settled
-          </summary>
-          <div className="mt-2 space-y-2">
-            {settled.map((d) => (
-              <DebtCard key={d.id} debt={d} today={today} />
-            ))}
-          </div>
-        </details>
+        <Collapsible label={`${settled.length} settled`}>
+          {settled.map((d) => (
+            <DebtCard key={d.id} debt={d} today={today} />
+          ))}
+        </Collapsible>
       )}
     </div>
   );

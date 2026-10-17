@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/cn";
 
-export type ChipOption<T extends string> = { value: T; label: string; activeClass: string };
+type ChipOption<T extends string> = { value: T; label: string; activeClass: string };
 
 // Radio-style grid; submits `name` inside a form
 export function ChipPicker<T extends string>({

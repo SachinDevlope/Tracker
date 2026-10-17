@@ -8,7 +8,7 @@ import { Field, FormError, Input } from "@/components/ui/Input";
 import { MoneyInput } from "@/components/ui/MoneyInput";
 import { addExpenseAction } from "../actions";
 import { CATEGORIES, CATEGORY_META, type Category } from "../categories";
-import { EXPENSE_NOTE_MAX } from "../types";
+import { NOTE_MAX } from "@/lib/form";
 
 const OPTIONS = CATEGORIES.map((c) => ({ value: c, label: c, activeClass: CATEGORY_META[c].activeClass }));
 
@@ -20,7 +20,7 @@ export function AddExpenseForm({ today }: { today: string }) {
 
   // Keep category + date for quick repeat entries
   useEffect(() => {
-    if (!state?.addedAt) return;
+    if (!state?.doneAt) return;
     if (amountRef.current) amountRef.current.value = "";
     if (noteRef.current) noteRef.current.value = "";
     amountRef.current?.focus();
@@ -42,12 +42,12 @@ export function AddExpenseForm({ today }: { today: string }) {
             <Input type="date" name="date" defaultValue={today} max={today} required className="px-2" />
           </Field>
           <Field label="note">
-            <Input ref={noteRef} name="note" maxLength={EXPENSE_NOTE_MAX} placeholder="// optional" autoComplete="off" />
+            <Input ref={noteRef} name="note" maxLength={NOTE_MAX} placeholder="// optional" autoComplete="off" />
           </Field>
         </div>
 
         <FormError message={state?.error} />
-        {state?.addedAt && !state.error && <p className="text-sm text-syn-green">✔ added</p>}
+        {state?.doneAt && !state.error && <p className="text-sm text-syn-green">✔ added</p>}
 
         <Button disabled={pending || !category} className="w-full py-3">
           {pending ? "saving…" : "$ add_expense"}

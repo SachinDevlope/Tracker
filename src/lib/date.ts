@@ -1,7 +1,7 @@
 import { env } from "./env";
 
 export const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-export const MONTH_RE = /^\d{4}-\d{2}$/;
+const MONTH_RE = /^\d{4}-\d{2}$/;
 
 export function isDateString(value: unknown): value is string {
   return typeof value === "string" && DATE_RE.test(value);
@@ -75,6 +75,11 @@ export function datesBetween(from: string, to: string) {
   const out: string[] = [];
   for (let d = from; d <= to; d = shiftDate(d, 1)) out.push(d);
   return out;
+}
+
+// Days in from..to that are on or before today (for daily averages)
+export function daysSoFar(from: string, to: string, today: string) {
+  return from > today ? 0 : datesBetween(from, to < today ? to : today).length;
 }
 
 export function formatDate(date: string, style: "long" | "short" = "long") {

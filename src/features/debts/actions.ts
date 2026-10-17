@@ -2,10 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { requireAuth } from "@/features/auth/session";
+import type { FormState } from "@/lib/form";
 import { addPayment, createDebt, deleteDebt, deletePayment } from "./service";
 import { parseDebtForm, parsePaymentForm } from "./validation";
-
-export type FormState = { error?: string; doneAt?: number } | undefined;
 
 export async function addDebtAction(_prev: FormState, formData: FormData): Promise<FormState> {
   await requireAuth();

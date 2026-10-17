@@ -3,13 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { requireAuth } from "@/features/auth/session";
 import { isDateString, today } from "@/lib/date";
+import type { FormState } from "@/lib/form";
 import { backfillDays, checkIn, checkOut, deleteDay, saveDay } from "./service";
 import { parseBackfillForm, parseDayForm } from "./validation";
 
-export type SaveDayState = { error?: string; savedAt?: number } | undefined;
-export type BackfillState = { error?: string; added?: number; skipped?: number } | undefined;
+type BackfillState = { error?: string; added?: number; skipped?: number } | undefined;
 
-export async function saveDayAction(date: string, _prev: SaveDayState, formData: FormData): Promise<SaveDayState> {
+export async function saveDayAction(date: string, _prev: FormState, formData: FormData): Promise<FormState> {
   await requireAuth();
   if (!isDateString(date)) return { error: "Invalid date" };
   // Today uses punch buttons; past days take typed times
@@ -18,7 +18,7 @@ export async function saveDayAction(date: string, _prev: SaveDayState, formData:
 
   await saveDay(date, parsed.data);
   revalidatePath("/", "layout");
-  return { savedAt: Date.now() };
+  return { doneAt: Date.now() };
 }
 
 export async function backfillAction(_prev: BackfillState, formData: FormData): Promise<BackfillState> {

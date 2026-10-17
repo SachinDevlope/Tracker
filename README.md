@@ -1,6 +1,6 @@
 # attendance.log
 
-A personal work attendance tracker for one person. Tap check in when you start work and check out when you finish. The app saves the exact time of each tap, marks each workday's status (office, half day, leave, absent or holiday), and works out your hours and an attendance percentage. It also tracks your daily expenses and the money you owe people.
+A personal work attendance tracker for one person. Tap check in when you start work and check out when you finish. The app saves the exact time of each tap, marks each workday's status (office, half day, leave, absent or holiday), and works out your hours and an attendance percentage. It also tracks your daily expenses, your tiffin meals, and the money you owe people.
 
 Built with Next.js 16 (App Router), Tailwind CSS v4 and MongoDB (Mongoose). The dark UI looks like a code editor, and the layout works on phones.
 
@@ -27,10 +27,17 @@ Built with Next.js 16 (App Router), Tailwind CSS v4 and MongoDB (Mongoose). The 
   - Record repayments in parts with `pay`. The `full` button fills in whatever is left. A payment can't be more than the amount still owed or dated before the borrow date. `log(n)` shows the payment history, and `×` undoes a payment.
   - Each debt shows how much is left, a progress bar of how much is repaid, and a due badge: red when overdue, amber when due within 7 days.
   - At the top: the total you still owe, the total repaid, how many debts are overdue, and a breakdown by person. Open debts are sorted by due date. Paid-off debts move to a collapsed **settled** section.
+- **Tiffin** (`/tiffin`): track lunch and dinner from a tiffin service.
+  - First set your prices (lunch, dinner or both) and, optionally, the vendor's name. Leave a price blank for a meal you don't take.
+  - Tap `lunch` or `dinner` to mark today's meal. Every day of the month up to today is listed below with its own toggles, so you can fix missed days. Future days can't be marked.
+  - Each meal saves the price at the time you mark it, so changing your prices later never changes past bills.
+  - For each month: **days ordered** (days with at least one meal), lunch and dinner counts, the bill, and what you paid. The balance due is all-time (every meal ever marked minus every payment), so unpaid months carry over. If you've paid ahead, it shows as an advance.
+  - Record payments to the vendor. `also add to expenses` (on by default) also saves the payment as a `food` expense, so your spending totals include tiffin. Deleting a payment doesn't remove that expense; delete it on the Expenses page.
 - **Dashboard** (`/dashboard`): everything for one date range on a single page.
   - Range: quick presets (`this_month`, `last_month`, `90_days`, `this_year`) or any custom from/to dates. Defaults to this month so far.
   - **Attendance:** the attendance %, total and average hours, status counts, late count, and a chart of hours worked.
   - **Spending:** total, daily average, category breakdown, and a chart of money spent.
+  - **Tiffin:** days ordered, lunch and dinner counts, and the bill for the range, plus the all-time balance due.
   - **Debts:** what you owe as of today, the amount repaid, the overdue count, and the next three due dates. This section ignores the range.
   - Charts show one bar per day for ranges up to 31 days, per week (starting Monday) up to 120 days, and per month beyond that.
   - A collapsible `attendance_log` lists every day in the range. You can export the range as `attendance.csv` or `expenses.csv`.
@@ -108,6 +115,7 @@ src/
     (app)/calendar/page.tsx     Calendar
     (app)/expenses/page.tsx     Expenses
     (app)/debts/page.tsx        Debts
+    (app)/tiffin/page.tsx       Tiffin
     (app)/dashboard/page.tsx    Dashboard
     login/page.tsx
     api/export/route.ts         attendance CSV
@@ -118,13 +126,14 @@ src/
     attendance/                 model → service → actions, plus validation, time, summary, status and UI components
     calendar/components/        MonthGrid
     debts/                      model (payments embedded in each debt) → service → actions, plus validation, summary (due state) and UI components
+    tiffin/                     meals (price saved per meal), settings, vendor payments, summary (days ordered, bill) and UI components
     statements/                 PDF → text lines (pdf.ts), Groq client, AI extraction + duplicate check, import action, review UI
     expenses/                   model → service → actions, plus validation, categories, summary and UI components
     dashboard/                  range presets, chart bucketing (trend.ts), attendance CSV, range filters and entry list
   components/
-    ui/                         reusable primitives: Button, Input, Card/Window, StatTile, BarChart, ChipPicker, MoneyInput, MonthNavigator, Skeleton
+    ui/                         reusable primitives: Button, Input, Card/Window, StatTile, BarChart, Collapsible, ChipPicker, MoneyInput, PaymentFields, MonthNavigator, Skeleton
     layout/                     AppShell, Nav
-  lib/                          env, db connection, date helpers, money (₹, stored as paise), CSV helper, cn
+  lib/                          env, db connection, shared schema fields (schema.ts), form parsing helpers (form.ts), date helpers, money (₹, stored as paise), CSV helper, cn
   proxy.ts                      sends you to /login when you are not signed in
 ```
 

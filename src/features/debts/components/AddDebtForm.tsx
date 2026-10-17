@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/Button";
 import { Window } from "@/components/ui/Card";
 import { Field, FormError, Input } from "@/components/ui/Input";
 import { MoneyInput } from "@/components/ui/MoneyInput";
-import { addDebtAction, type FormState } from "../actions";
-import { DEBT_NOTE_MAX, LENDER_MAX } from "../types";
+import type { FormState } from "@/lib/form";
+import { addDebtAction } from "../actions";
+import { NAME_MAX, NOTE_MAX } from "@/lib/form";
 
 export function AddDebtForm({ today }: { today: string }) {
   const [open, setOpen] = useState(false);
@@ -28,7 +29,7 @@ export function AddDebtForm({ today }: { today: string }) {
     <Window title="debts/new.ts">
       <form action={action} className="space-y-4">
         <Field label="owed_to">
-          <Input name="lender" required maxLength={LENDER_MAX} placeholder="Rahul, HDFC card, Mom…" autoComplete="off" autoFocus />
+          <Input name="lender" required maxLength={NAME_MAX} placeholder="Rahul, HDFC card, Mom…" autoComplete="off" autoFocus />
         </Field>
         <Field label="amount">
           <MoneyInput name="amount" />
@@ -42,7 +43,7 @@ export function AddDebtForm({ today }: { today: string }) {
           </Field>
         </div>
         <Field label="note">
-          <Input name="note" maxLength={DEBT_NOTE_MAX} placeholder="// optional" autoComplete="off" />
+          <Input name="note" maxLength={NOTE_MAX} placeholder="// optional" autoComplete="off" />
         </Field>
 
         <FormError message={state?.error} />

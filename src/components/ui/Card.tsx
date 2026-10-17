@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react";
 import { cn } from "@/lib/cn";
 
-export const cardStyles = "rounded-lg border border-border bg-card";
+const cardStyles = "rounded-lg border border-border bg-card";
 
 export function Card({ className, ...props }: ComponentProps<"div">) {
   return <div className={cn(cardStyles, className)} {...props} />;

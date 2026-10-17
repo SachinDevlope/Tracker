@@ -1,4 +1,4 @@
-export type CsvColumn<T> = [title: string, get: (row: T) => string | number];
+type CsvColumn<T> = [title: string, get: (row: T) => string | number];
 
 function cell(value: string | number) {
   const s = String(value);

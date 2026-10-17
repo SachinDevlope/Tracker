@@ -14,7 +14,7 @@ const SIZES = {
   icon: "grid h-11 w-11 shrink-0 place-items-center",
 };
 
-export type ButtonStyleProps = {
+type ButtonStyleProps = {
   variant?: keyof typeof VARIANTS;
   size?: keyof typeof SIZES;
   className?: string;

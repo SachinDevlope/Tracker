@@ -19,6 +19,3 @@ export type Debt = {
 
 export type DebtInput = Pick<Debt, "lender" | "amount" | "borrowedOn" | "dueOn" | "note">;
 export type PaymentInput = Omit<Payment, "id">;
-
-export const LENDER_MAX = 60;
-export const DEBT_NOTE_MAX = 200;
