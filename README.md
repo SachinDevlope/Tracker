@@ -28,16 +28,17 @@ Built with Next.js 16 (App Router), Tailwind CSS v4 and MongoDB (Mongoose). The 
   - Each debt shows how much is left, a progress bar of how much is repaid, and a due badge: red when overdue, amber when due within 7 days.
   - At the top: the total you still owe, the total repaid, how many debts are overdue, and a breakdown by person. Open debts are sorted by due date. Paid-off debts move to a collapsed **settled** section.
 - **Tiffin** (`/tiffin`): track lunch and dinner from a tiffin service.
-  - First set your prices (lunch, dinner or both) and, optionally, the vendor's name. Leave a price blank for a meal you don't take.
   - Tap `lunch` or `dinner` to mark today's meal. Every day of the month up to today is listed below with its own toggles, so you can fix missed days. Future days can't be marked.
-  - Each meal saves the price at the time you mark it, so changing your prices later never changes past bills.
-  - For each month: **days ordered** (days with at least one meal), lunch and dinner counts, the bill, and what you paid. The balance due is all-time (every meal ever marked minus every payment), so unpaid months carry over. If you've paid ahead, it shows as an advance.
-  - Record payments to the vendor. `also add to expenses` (on by default) also saves the payment as a `food` expense, so your spending totals include tiffin. Deleting a payment doesn't remove that expense; delete it on the Expenses page.
+  - For each month: **days ordered** (days with at least one meal) and the lunch and dinner counts.
+  - **Prices are optional.** With no prices set, the page only tracks which meals you had. To add billing, open `add prices (optional)` at the bottom and set a lunch price, a dinner price, or both, plus the vendor's name if you like.
+  - Once prices are set, each meal saves the price at the time you mark it, so changing prices later never changes past bills. Meals marked before you set prices stay unpriced.
+  - With billing on, each month also shows the bill and what you paid. The balance due is all-time (every priced meal minus every payment), so unpaid months carry over. If you've paid ahead, it shows as an advance.
+  - Record payments to the vendor once billing is on. `also add to expenses` (on by default) also saves the payment as a `food` expense, so your spending totals include tiffin. Deleting a payment doesn't remove that expense; delete it on the Expenses page.
 - **Dashboard** (`/dashboard`): everything for one date range on a single page.
   - Range: quick presets (`this_month`, `last_month`, `90_days`, `this_year`) or any custom from/to dates. Defaults to this month so far.
   - **Attendance:** the attendance %, total and average hours, status counts, late count, and a chart of hours worked.
   - **Spending:** total, daily average, category breakdown, and a chart of money spent.
-  - **Tiffin:** days ordered, lunch and dinner counts, and the bill for the range, plus the all-time balance due.
+  - **Tiffin:** days ordered and lunch and dinner counts for the range, plus the bill and all-time balance due when prices are set.
   - **Debts:** what you owe as of today, the amount repaid, the overdue count, and the next three due dates. This section ignores the range.
   - Charts show one bar per day for ranges up to 31 days, per week (starting Monday) up to 120 days, and per month beyond that.
   - A collapsible `attendance_log` lists every day in the range. You can export the range as `attendance.csv` or `expenses.csv`.

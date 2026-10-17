@@ -3,7 +3,7 @@ import { parseAmount } from "@/lib/money";
 import { NAME_MAX, field as get, noteError, type Result } from "@/lib/form";
 import type { TiffinPaymentInput, TiffinSettings } from "./types";
 
-// Blank or "0" = not ordered
+// Blank or "0" = no price
 function parsePrice(input: string) {
   return input === "" || /^0+(\.0+)?$/.test(input) ? 0 : parseAmount(input);
 }
@@ -14,7 +14,6 @@ export function parseSettingsForm(formData: FormData): Result<TiffinSettings> {
   const vendor = get(formData, "vendor");
 
   if (lunchPrice === null || dinnerPrice === null) return { ok: false, error: "Enter valid prices, e.g. 80" };
-  if (!lunchPrice && !dinnerPrice) return { ok: false, error: "Set a price for lunch, dinner or both" };
   if (vendor.length > NAME_MAX) return { ok: false, error: `Name must be at most ${NAME_MAX} characters` };
 
   return { ok: true, data: { lunchPrice, dinnerPrice, vendor } };

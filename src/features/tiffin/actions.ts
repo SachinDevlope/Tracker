@@ -6,7 +6,7 @@ import { createExpense } from "@/features/expenses/service";
 import { isDateString, today } from "@/lib/date";
 import { NOTE_MAX, type FormState } from "@/lib/form";
 import { addPayment, deletePayment, getSettings, saveSettings, setMeal } from "./service";
-import { isMeal, type Meal } from "./types";
+import { isMeal, priceFor, type Meal } from "./types";
 import { parsePaymentForm, parseSettingsForm } from "./validation";
 
 function refresh() {
@@ -17,11 +17,7 @@ function refresh() {
 export async function setMealAction(date: string, meal: Meal, on: boolean): Promise<{ error?: string }> {
   await requireAuth();
   if (!isDateString(date) || date > today() || !isMeal(meal)) return { error: "Invalid day" };
-  const settings = await getSettings();
-  const price = settings?.[meal === "lunch" ? "lunchPrice" : "dinnerPrice"];
-  if (!price) return { error: `Set a ${meal} price first` };
-
-  await setMeal(date, meal, Boolean(on), price);
+  await setMeal(date, meal, Boolean(on), priceFor(await getSettings(), meal));
   refresh();
   return {};
 }

@@ -26,7 +26,7 @@ export function SettingsForm({ settings }: { settings: TiffinSettings | null }) 
       <Field label="vendor">
         <Input name="vendor" maxLength={NAME_MAX} defaultValue={settings?.vendor} placeholder="// optional, e.g. Annapurna Tiffins" autoComplete="off" />
       </Field>
-      <p className="text-xs text-muted">{"// leave a price blank if you don't take that meal · new prices apply to meals marked from now on"}</p>
+      <p className="text-xs text-muted">{"// optional · new prices apply to meals marked from now on, older meals stay unpriced"}</p>
       <FormError message={state?.error} />
       {state?.doneAt && !state.error && <p className="text-sm text-syn-green">✔ saved</p>}
       <Button disabled={pending} className="w-full">
